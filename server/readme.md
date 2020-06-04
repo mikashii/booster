@@ -10,18 +10,17 @@ Pacotes utilizados com o typeScript:
 *  **Typescript**
 
 ---
-Rotas: Endereço completo da requisição
-Entidade/Recurso: Qual recurso estamos utlizando e acessando no sistema, por exemplo: --localhost:3000/**users**
+* Rotas: Endereço completo da requisição
 
-### Arquivos estáticos
+* Entidade/Recurso: Qual recurso estamos utlizando e acessando no sistema, por exemplo: https://localhost:3000/**users**
+
+### Servindo arquivos estáticos
 
 Arquivos que serão servidos diretamente pelo front, como imagens, docx, pdf ou conteúdos a serem baixados.
-```
-app.use('/tmp', express.static())
-```
+
+`app.use('/tmp', express.static())`
+
 As imagens serão servidas atráves de uma rota específica do express a partir do recurso **tmp/nome_da_imagem**
-
-
 
 ---
 
@@ -109,6 +108,8 @@ knex('items').insert([
 ```
 
 A pasta seeds é inclusa dentro do arquivo **knexfile.ts**
+
+
 
 
 
