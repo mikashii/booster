@@ -3,6 +3,29 @@ import {Request, Response} from 'express'
 
 
 class PointsController{
+    async index (req: Request, res: Response){
+        const {city, uf, items} = req.query
+        
+        const parsedItems = String(items)
+        .split(',')
+        .map(item => Number(item.trim()));
+
+        const points = await knex('points')
+        .join('point_items', 'points.id', '=', 'point_items.point_id')
+        .whereIn('point_items.item_id', parsedItems)
+        .where('city', String(city))
+        .where('uf', String(uf))
+        .distinct()
+        .select('points.*');
+
+
+
+
+
+
+
+        return res.json(points)
+    }
     async show (req: Request, res: Response){
         const { id } = req.params
 
@@ -29,16 +52,7 @@ class PointsController{
     
         const trx = await knex.transaction();
     
-        const point = {
-            image: 'fake-image',
-            name,
-            email,
-            whatsapp,
-            latitude,
-            longitude,
-            city,
-            uf
-        }
+        const point = {image: 'https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=70',name,email,whatsapp,latitude,longitude,city,uf}
         const insertedIds = await trx('points').insert(point);
 
         const point_id = insertedIds[0]
@@ -48,9 +62,13 @@ class PointsController{
         })
     
         await trx('point_items').insert(pointItems)
-        trx.commit()
+        await trx.commit()
+        
+
         return res.json({id: point_id,...point})
     }
 }
+
+
 
 export default PointsController
